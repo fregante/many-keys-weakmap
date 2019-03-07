@@ -25,7 +25,7 @@ The number of keys allowed is unlimited and their order is relevant.
 ## Install
 
 ```
-$ npm install bfred-it/many-keys-map
+$ npm install many-keys-map
 ```
 
 
