@@ -1,74 +1,69 @@
-# many-keys-map [![Build Status](https://api.travis-ci.com/bfred-it/many-keys-map.svg?branch=master)](https://travis-ci.com/bfred-it/many-keys-map)
+# many-keys-weakmap [![Build Status](https://api.travis-ci.com/bfred-it/many-keys-weakmap.svg?branch=master)](https://travis-ci.com/bfred-it/many-keys-weakmap)
 
-> A `Map` subclass with support for multiple keys for one entry.
+> A `WeakMap` subclass with support for multiple keys for one entry.
 
-A `ManyKeysMap` object is identical to a regular `Map`, which the exception that it only supports a _sequence of keys_ as key, instead of a single key. This will let you attach a value to a specific combination of keys, instead of a single key.
+A `ManyKeysWeakMap` object is identical to a regular `WeakMap`, which the exception that it only supports a _sequence of keys_ as key, instead of a single key. This will let you attach a value to a specific combination of keys, instead of a single key.
 
 ```js
-const regularMap = new Map();
-regularMap.set('hello', true);
+const regularMap = new WeakMap();
+regularMap.set({}, true);
 
-const manyKeysMap = new ManyKeysMap();
-manyKeysMap.set(['hello', 'world'], true);
+const manyKeysWeakMap = new ManyKeysWeakMap();
+manyKeysWeakMap.set([{}, new Date()], true);
 ```
 
-This is useful when the keys cannot be easily combined (i.e. object)
+Or:
 
 ```js
-const handlers = new ManyKeysMap();
-handlers.set([element, 'click'], onClickFn);
-handlers.set([element, 'keypress', {passive: true}], onKeypressFn);
+const handlers = new ManyKeysWeakMap();
+handlers.set([element, sub1], fn1);
+handlers.set([element, sub2, {passive: true}], fn2);
 ```
 
 The number of keys allowed is unlimited and their order is relevant.
 
+
 ## Install
 
 ```
-$ npm install many-keys-map
+$ npm install many-keys-weakmap
 ```
 
 
 ## Usage
 
-It should work exactly the same as a `Map`, except that the `key` must always be an array.
+It should work exactly the same as a `WeakMap`, except that the `key` must always be an array.
 
 ```js
-const ManyKeysMap = require('many-keys-map');
+const ManyKeysWeakMap = require('many-keys-weakmap');
 
-const groups = new ManyKeysMap();
-groups.set([header, 'admin'], true);
-groups.set([target, 'tools'], [1, 'any value is supported']);
+const groups = new ManyKeysWeakMap();
+groups.set([header, admin], true);
+groups.set([target, tools], [1, 'any value is supported']);
 
-const data = new ManyKeysMap([
-	[['hello key'], 'value'],
-	[[42, null], new Date()]
+const key1 = {};
+const keyA = {};
+const keyB = {};
+const data = new ManyKeysWeakMap([
+	[[key1], 'value'],
+	[[keyA, keyB], new Date()]
 ]);
 
-data.get(['hello key']);
+data.get([key1]);
 // => 'value'
 
-data.get([42, null]);
+data.get([keyA, keyB]);
 // => date Object
 
-data.get(['42']);
+data.get([{}]);
 // => undefined
-
-data.has([Symbol()]);
-// => false
 
 for (const [keys, value] of data) {
 	console.log(keys);
 	console.log(value);
 }
-// => ['hello key']
+// => [key1]
 // => 'value'
-// => [42, null]
+// => [key1, key2]
 // => date Object
 ```
-
-
-## License
-
-MIT © [Federico Brigante](http://twitter.com/bfred_it)
-

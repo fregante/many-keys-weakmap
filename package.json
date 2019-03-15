@@ -1,9 +1,9 @@
 {
-	"name": "many-keys-map",
-	"version": "1.0.0",
+	"name": "many-keys-weakmap",
+	"version": "0.0.0",
 	"description": "",
 	"license": "MIT",
-	"repository": "bfred-it/many-keys-map",
+	"repository": "bfred-it/many-keys-weakmap",
 	"author": "Federico Brigante <github@bfred.it> (bfred.it)",
 	"keywords": [],
 	"files": [
