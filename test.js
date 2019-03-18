@@ -38,6 +38,11 @@ test('Get', t => {
 	t.is(map.get([O]), undefined);
 	t.is(map.get([O, T]), undefined);
 	t.is(map.get([O, T, W]), undefined);
+
+	map.set([O, W]);
+	map.set([W, O]);
+	t.is(map.get([O, W]), 'one');
+	t.is(map.get([W, O]), 'two');
 });
 
 test('Has', t => {
