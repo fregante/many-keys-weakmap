@@ -39,8 +39,8 @@ test('Get', t => {
 	t.is(map.get([O, T]), undefined);
 	t.is(map.get([O, T, W]), undefined);
 
-	map.set([O, W]);
-	map.set([W, O]);
+	map.set([O, W], 'one');
+	map.set([W, O], 'two');
 	t.is(map.get([O, W]), 'one');
 	t.is(map.get([W, O]), 'two');
 });
@@ -60,7 +60,7 @@ test('Has', t => {
 	t.false(map.has([O, T, W]));
 });
 
-test.skip('Delete', t => {
+test('Delete', t => {
 	const object = {};
 
 	const map = new ManyKeysWeakMap([
@@ -85,9 +85,9 @@ test('All types of keys', t => {
 
 	let key = {};
 	t.is(map.set([key], 'object').get([key]), 'object');
-	// t.true(map.delete([key]));
+	t.true(map.delete([key]));
 
 	key = [];
 	t.is(map.set([key], 'array').get([key]), 'array');
-	// t.true(map.delete([key]));
+	t.true(map.delete([key]));
 });
