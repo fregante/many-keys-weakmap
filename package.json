@@ -1,11 +1,21 @@
 {
 	"name": "many-keys-weakmap",
 	"version": "1.0.0",
-	"description": "",
+	"description": "A `WeakMap` subclass with support for multiple keys for one entry.",
 	"license": "MIT",
 	"repository": "bfred-it/many-keys-weakmap",
 	"author": "Federico Brigante <github@bfred.it> (bfred.it)",
-	"keywords": [],
+	"keywords": [
+		"weakmap",
+		"multiple",
+		"keys",
+		"map",
+		"multimap",
+		"multi",
+		"key",
+		"many",
+		"any"
+	],
 	"files": [
 		"index.js"
 	],
