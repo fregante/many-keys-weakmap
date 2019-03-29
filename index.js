@@ -8,13 +8,11 @@ class Value {
 	}
 }
 
-function checkKeys(keys) {
+function getLastMap({[baseMap]: map}, keys, create) {
 	if (!Array.isArray(keys)) {
 		throw new TypeError('The keys parameter must be an array');
 	}
-}
 
-function getLastMap({[baseMap]: map}, keys, create) {
 	for (const key of keys) {
 		if (!map.has(key)) {
 			if (create) {
@@ -51,26 +49,22 @@ module.exports = class ManyKeysWeakMap extends WeakMap {
 	}
 
 	set(keys, value) {
-		checkKeys(keys);
 		const lastMap = getLastMap(this, keys, true);
 		lastMap.set(Value, value);
 		return this;
 	}
 
 	get(keys) {
-		checkKeys(keys);
 		const lastMap = getLastMap(this, keys);
 		return lastMap ? lastMap.get(Value) : undefined;
 	}
 
 	has(keys) {
-		checkKeys(keys);
 		const lastMap = getLastMap(this, keys);
 		return Boolean(lastMap) && lastMap.has(Value);
 	}
 
 	delete(keys) {
-		checkKeys(keys);
 		const lastMap = getLastMap(this, keys);
 		return Boolean(lastMap) && lastMap.delete(Value);
 	}
