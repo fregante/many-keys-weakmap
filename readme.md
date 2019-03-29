@@ -12,16 +12,15 @@ const manyKeysWeakMap = new ManyKeysWeakMap();
 manyKeysWeakMap.set([{}, new Date()], true);
 ```
 
-Or:
+As a bonus, only the first key has to be an object (like `WeakMap` requires) but the others can be anything. This is possible because keys are stored like an upside-down tree: If the trunk is cut (i.e. purged from memory), the rest of the keys and the value will follow.
 
 ```js
 const handlers = new ManyKeysWeakMap();
-handlers.set([element, sub1], fn1);
-handlers.set([element, sub2, {passive: true}], fn2);
+handlers.set([element, 'click'], onClickFn);
+handlers.set([element, 'keypress', {passive: true}], onKeypressFn);
 ```
 
-The number of keys allowed is unlimited and their order is relevant.
-
+More details in the [Allowed keys](#allowed-keys) section.
 
 ## Install
 
@@ -57,13 +56,17 @@ data.get([keyA, keyB]);
 
 data.get([{}]);
 // => undefined
-
-for (const [keys, value] of data) {
-	console.log(keys);
-	console.log(value);
-}
-// => [key1]
-// => 'value'
-// => [key1, key2]
-// => date Object
 ```
+
+### Allowed keys
+
+1. Keys must always be an array, e.g. `.set([a, b], 'hello')`
+2. Only the values in the `keys` array are stored, not the array itself — so future changes to the array won’t be reflected in the map.
+3. `ManyKeysWeakMap` supports any number of keys, any of these are valid and different: `.get([a])` and `.get([a, b, c, d, e, f, g])`
+4. The order of keys is irrelevant, so `.get([a, b])` is different from `.get(b, a)`
+5. The first key must be an object (that `WeakMap` supports), but the rest can be anything supported by `Map`.
+
+
+# Related
+
+- [many-keys-map](https://github.com/bfred-it/many-keys-map) - A `Map` subclass with support for multiple keys for one entry.

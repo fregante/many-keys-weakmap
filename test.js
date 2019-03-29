@@ -80,14 +80,37 @@ test('Delete', t => {
 	t.true(map.delete([object]));
 });
 
-test('All types of keys', t => {
+test('Mixed types of keys after the first object', t => {
+	const key = {};
 	const map = new ManyKeysWeakMap();
 
-	let key = {};
-	t.is(map.set([key], 'object').get([key]), 'object');
-	t.true(map.delete([key]));
+	map.set([key, 1, '1', true], 'truthy');
+	t.is(map.get([key, 1, '1', true]), 'truthy');
+	t.is(map.get([key, 1, '1', 'true']), undefined);
+	t.is(map.get([key, '1', '1', true]), undefined);
+	t.is(map.get([key, 1, '1', true, 1]), undefined);
+	t.is(map.get([key, 1, 1, 1]), undefined);
 
-	key = [];
-	t.is(map.set([key], 'array').get([key]), 'array');
-	t.true(map.delete([key]));
+	map.set([key, false, null, undefined], 'falsy');
+	t.is(map.get([key, false, null, undefined]), 'falsy');
+	t.is(map.get([key, false, 'null', 'undefined']), undefined);
+	t.is(map.get([key, 'null', 'null', undefined]), undefined);
+	t.is(map.get([key, false, 'null', undefined, false]), undefined);
+	t.is(map.get([key, false, false, false]), undefined);
+	t.is(map.get([key, undefined, undefined, undefined]), undefined);
+
+	map.set([key, undefined], 'undefined');
+	t.is(map.get([key, undefined]), 'undefined');
+	t.is(map.get([key, 'undefined']), undefined);
+	t.is(map.get([key, ,]), 'undefined'); // eslint-disable-line no-sparse-arrays,comma-spacing
+
+	const key1 = {};
+	const key2 = {};
+	const key3 = Symbol(3);
+	const key4 = Symbol(4);
+	map.set([key, key1, key2, key3, key4], 'references');
+	t.is(map.get([key, key1, key2, key3, key4]), 'references');
+	t.is(map.get([key, key2, key1, key3, key4]), undefined);
+	t.is(map.get([key, key1, key2, key4, key3]), undefined);
+	t.is(map.get([key, key1, key2, key3, Symbol(4)]), undefined);
 });

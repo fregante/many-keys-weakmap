@@ -16,7 +16,7 @@ function getLastMap({[baseMap]: map}, keys, create) {
 	for (const key of keys) {
 		if (!map.has(key)) {
 			if (create) {
-				map.set(key, new WeakMap());
+				map.set(key, new Map());
 			} else {
 				return undefined;
 			}
