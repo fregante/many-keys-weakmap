@@ -1,6 +1,7 @@
 'use strict';
 
 const baseMap = Symbol('baseMap');
+const levelTypesKey = Symbol('levelTypes');
 
 class Value {
 	constructor(value) {
@@ -9,14 +10,16 @@ class Value {
 }
 
 function getLastMap({[baseMap]: map}, keys, create) {
+	const levelTypes = map[levelTypesKey] || [];
+
 	if (!Array.isArray(keys)) {
 		throw new TypeError('The keys parameter must be an array');
 	}
 
-	for (const key of keys) {
+	for (const [i, key] of Object.entries(keys)) {
 		if (!map.has(key)) {
 			if (create) {
-				map.set(key, new Map());
+				map.set(key, new (levelTypes[Number(i) + 1] || WeakMap)());
 			} else {
 				return undefined;
 			}
@@ -28,13 +31,35 @@ function getLastMap({[baseMap]: map}, keys, create) {
 	return map;
 }
 
+function isLevelTypesValid(levelTypes) {
+	if (!Array.isArray(levelTypes)) {
+		return false;
+	}
+
+	for (const level of levelTypes) {
+		if (level !== Map && level !== WeakMap) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
 module.exports = class ManyKeysWeakMap extends WeakMap {
 	constructor() {
 		super();
-		this[baseMap] = new WeakMap();
 
 		// eslint-disable-next-line prefer-rest-params
-		const [pairs] = arguments; // WeakMap compat
+		let [pairs, levelTypes] = arguments; // WeakMap compat
+
+		levelTypes = levelTypes || [];
+		if (!isLevelTypesValid(levelTypes)) {
+			throw new TypeError('levelTypes must be an array of Map or WeakMap');
+		}
+
+		this[baseMap] = new (levelTypes[0] || WeakMap)();
+		this[baseMap][levelTypesKey] = levelTypes;
+
 		if (pairs === null || pairs === undefined) {
 			return;
 		}

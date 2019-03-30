@@ -82,7 +82,7 @@ test('Delete', t => {
 
 test('Mixed types of keys after the first object', t => {
 	const key = {};
-	const map = new ManyKeysWeakMap();
+	let map = new ManyKeysWeakMap([], [WeakMap, Map, Map, Map]);
 
 	map.set([key, 1, '1', true], 'truthy');
 	t.is(map.get([key, 1, '1', true]), 'truthy');
@@ -102,8 +102,8 @@ test('Mixed types of keys after the first object', t => {
 	map.set([key, undefined], 'undefined');
 	t.is(map.get([key, undefined]), 'undefined');
 	t.is(map.get([key, 'undefined']), undefined);
-	t.is(map.get([key, ,]), 'undefined'); // eslint-disable-line no-sparse-arrays,comma-spacing
 
+	map = new ManyKeysWeakMap([], [WeakMap, WeakMap, Map, Map, Map]);
 	const key1 = {};
 	const key2 = {};
 	const key3 = Symbol(3);

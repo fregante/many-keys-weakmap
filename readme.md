@@ -10,15 +10,26 @@ regularMap.set({}, true);
 
 const manyKeysWeakMap = new ManyKeysWeakMap();
 manyKeysWeakMap.set([{}, new Date()], true);
+
+const manyKeysWeakMap = new ManyKeysWeakMap([[document]: 'value']);
+manyKeysWeakMap.get([document]); // 'value'
 ```
 
-As a bonus, only the first key has to be an object (like `WeakMap` requires) but the others can be anything. This is possible because keys are stored like an upside-down tree: If the trunk is cut (i.e. purged from memory), the rest of the keys and the value will follow.
+As a bonus, you can provide a second parameter to the `ManyKeysWeakMap` constructor to specify how to store each key (in a `WeakMap` or `Map`) to enable storing non-object values as well.
 
 ```js
-const handlers = new ManyKeysWeakMap();
+const handlers = new ManyKeysWeakMap([/* Empty starting point*/], [WeakMap, Map]);
+//            WeakMap     Map
 handlers.set([element, 'click'], onClickFn);
+
+//            WeakMap      Map     WeakMap (default)
 handlers.set([element, 'keypress', {passive: true}], onKeypressFn);
+
+//            WeakMap      Map         WeakMap           WeakMap
+handlers.set([element, 'keypress', {passive: true}, {something: 'else'}], listen);
 ```
+
+Of course, if none of keys end up in a `WeakMap`, you might as well use [many-keys-map](https://github.com/bfred-it/many-keys-map) and get all the benefits of a real `Map`
 
 More details in the [Allowed keys](#allowed-keys) section.
 
@@ -64,7 +75,7 @@ data.get([{}]);
 2. Only the values in the `keys` array are stored, not the array itself — so future changes to the array won’t be reflected in the map.
 3. `ManyKeysWeakMap` supports any number of keys, any of these are valid and different: `.get([a])` and `.get([a, b, c, d, e, f, g])`
 4. The order of keys is irrelevant, so `.get([a, b])` is different from `.get(b, a)`
-5. The first key must be an object (that `WeakMap` supports), but the rest can be anything supported by `Map`.
+5. By default, only `object`s are allowed as keys. If you specify any `Map`s in the second parameter, then you can use anything supported by `Map`.
 
 
 # Related
