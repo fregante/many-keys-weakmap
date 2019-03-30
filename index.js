@@ -74,14 +74,13 @@ module.exports = class ManyKeysWeakMap extends WeakMap {
 	}
 
 	set(keys, value) {
-		const lastMap = getLastMap(this, keys, true);
-		lastMap.set(Value, value);
+		getLastMap(this, keys, true).set(Value, value);
 		return this;
 	}
 
 	get(keys) {
 		const lastMap = getLastMap(this, keys);
-		return lastMap ? lastMap.get(Value) : undefined;
+		return lastMap && lastMap.get(Value);
 	}
 
 	has(keys) {
