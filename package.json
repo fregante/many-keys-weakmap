@@ -17,16 +17,28 @@
 		"any"
 	],
 	"files": [
-		"index.js"
+		"index.js",
+		"index.d.ts"
 	],
 	"scripts": {
-		"test": "xo && ava"
+		"test": "tsc && xo && ava",
+		"prepare": "tsc",
+		"build": "tsc",
+		"watch": "tsc --watch"
 	},
 	"devDependencies": {
+		"@sindresorhus/tsconfig": "^0.3.0",
+		"@typescript-eslint/eslint-plugin": "^1.5.0",
 		"ava": "*",
+		"eslint-config-xo-typescript": "^0.9.0",
+		"typescript": "^3.4.1",
 		"xo": "*"
 	},
 	"xo": {
+		"extends": "xo-typescript",
+		"extensions": [
+			"ts"
+		],
 		"rules": {
 			"no-new": 0
 		}
