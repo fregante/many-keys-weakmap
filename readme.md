@@ -1,4 +1,4 @@
-# many-keys-weakmap [![Build Status](https://api.travis-ci.com/bfred-it/many-keys-weakmap.svg?branch=master)](https://travis-ci.com/bfred-it/many-keys-weakmap)
+# many-keys-weakmap [![Build Status](https://api.travis-ci.com/fregante/many-keys-weakmap.svg?branch=master)](https://travis-ci.com/fregante/many-keys-weakmap)
 
 > A `WeakMap` subclass with support for multiple keys for one entry.
 

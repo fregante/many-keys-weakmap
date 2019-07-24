@@ -2,23 +2,23 @@
 	"name": "many-keys-weakmap",
 	"version": "1.0.0",
 	"description": "",
-	"license": "MIT",
-	"repository": "bfred-it/many-keys-weakmap",
-	"author": "Federico Brigante <github@bfred.it> (bfred.it)",
 	"keywords": [],
+	"repository": "fregante/many-keys-weakmap",
+	"license": "MIT",
+	"author": "Federico Brigante <opensource@bfred.it> (bfred.it)",
 	"files": [
 		"index.js"
 	],
 	"scripts": {
 		"test": "xo && ava"
 	},
-	"devDependencies": {
-		"ava": "*",
-		"xo": "*"
-	},
 	"xo": {
 		"rules": {
 			"no-new": 0
 		}
+	},
+	"devDependencies": {
+		"ava": "*",
+		"xo": "*"
 	}
 }
