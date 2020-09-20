@@ -2,37 +2,29 @@
 	"name": "many-keys-weakmap",
 	"version": "2.0.0-0",
 	"description": "A `WeakMap` subclass with support for multiple keys for one entry.",
-	"license": "MIT",
-	"repository": "bfred-it/many-keys-weakmap",
-	"author": "Federico Brigante <github@bfred.it> (bfred.it)",
 	"keywords": [
-		"weakmap",
-		"multiple",
-		"keys",
-		"map",
-		"multimap",
-		"multi",
+		"any",
 		"key",
+		"keys",
 		"many",
-		"any"
+		"map",
+		"multi",
+		"multimap",
+		"multiple",
+		"weakmap"
 	],
+	"repository": "bfred-it/many-keys-weakmap",
+	"license": "MIT",
+	"author": "Federico Brigante <github@bfred.it> (bfred.it)",
 	"files": [
 		"index.js",
 		"index.d.ts"
 	],
 	"scripts": {
-		"test": "tsc && xo && ava",
-		"prepare": "tsc",
 		"build": "tsc",
+		"prepare": "tsc",
+		"test": "tsc && xo && ava",
 		"watch": "tsc --watch"
-	},
-	"devDependencies": {
-		"@sindresorhus/tsconfig": "^0.3.0",
-		"@typescript-eslint/eslint-plugin": "^1.5.0",
-		"ava": "*",
-		"eslint-config-xo-typescript": "^0.9.0",
-		"typescript": "^3.4.1",
-		"xo": "*"
 	},
 	"xo": {
 		"extends": "xo-typescript",
@@ -42,5 +34,13 @@
 		"rules": {
 			"no-new": 0
 		}
+	},
+	"devDependencies": {
+		"@sindresorhus/tsconfig": "^0.3.0",
+		"@typescript-eslint/eslint-plugin": "^1.5.0",
+		"ava": "*",
+		"eslint-config-xo-typescript": "^0.9.0",
+		"typescript": "^3.4.1",
+		"xo": "*"
 	}
 }
