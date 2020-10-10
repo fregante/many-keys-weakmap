@@ -67,3 +67,7 @@ for (const [keys, value] of data) {
 // => [key1, key2]
 // => date Object
 ```
+
+# Related
+
+- [many-keys-map](https://github.com/fregante/many-keys-map) - A `WeakMap` subclass with support for multiple keys for one entry.
