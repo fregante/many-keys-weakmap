@@ -1,4 +1,7 @@
-# many-keys-weakmap [![Build Status](https://api.travis-ci.com/fregante/many-keys-weakmap.svg?branch=master)](https://travis-ci.com/fregante/many-keys-weakmap)
+# many-keys-weakmap [![][badge-gzip]][link-bundlephobia]
+
+[badge-gzip]: https://img.shields.io/bundlephobia/minzip/many-keys-weakmap.svg?label=gzipped
+[link-bundlephobia]: https://bundlephobia.com/result?p=many-keys-weakmap
 
 > A `WeakMap` subclass with support for multiple keys for one entry.
 
