@@ -80,6 +80,7 @@ test('ManyKeysWeakMap', t => {
 	t.is(weakmap.get([frozen]), undefined, 'works with frozen objects, #4');
 	let done = false;
 	try {
+		// eslint-disable-next-line no-new
 		new ManyKeysWeakMap(createIterable([null, 1, 2], {
 			return() {
 				done = true;
@@ -98,6 +99,7 @@ test('ManyKeysWeakMap', t => {
 		return Array.prototype[Symbol.iterator].call(this);
 	};
 
+	// eslint-disable-next-line no-new
 	new ManyKeysWeakMap(array);
 	t.true(done);
 	object = {};
