@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import ManyKeysWeakMap from "./index.js";
+import ManyKeysWeakMap from './index.js';
 
 test('Basics', t => {
 	const map = new ManyKeysWeakMap();

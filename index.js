@@ -1,5 +1,3 @@
-'use strict';
-
 const baseMap = Symbol('baseMap');
 
 class Value {
@@ -28,7 +26,7 @@ function getLastMap({[baseMap]: map}, keys, create) {
 	return map;
 }
 
-module.exports = class ManyKeysWeakMap extends WeakMap {
+export default class ManyKeysWeakMap extends WeakMap {
 	constructor() {
 		super();
 		this[baseMap] = new WeakMap();
@@ -71,4 +69,4 @@ module.exports = class ManyKeysWeakMap extends WeakMap {
 	get [Symbol.toStringTag]() {
 		return 'ManyKeysWeakMap';
 	}
-};
+}

@@ -1,8 +1,17 @@
 {
 	"name": "many-keys-weakmap",
 	"version": "1.0.0",
-	"description": "",
-	"keywords": [],
+	"description": "A `WeakMap` subclass with support for multiple keys for one entry.",
+	"keywords": [
+		"any",
+		"key",
+		"keys",
+		"many",
+		"map",
+		"multi",
+		"multimap",
+		"multiple"
+	],
 	"repository": "fregante/many-keys-weakmap",
 	"funding": "https://github.com/sponsors/fregante",
 	"license": "MIT",
@@ -10,6 +19,7 @@
 	"exports": "./index.js",
 	"main": "./index.js",
 	"types": "./index.d.ts",
+	"type": "module",
 	"files": [
 		"index.js"
 	],
@@ -22,7 +32,7 @@
 		}
 	},
 	"devDependencies": {
-		"ava": "*",
-		"xo": "*"
+		"ava": "^5.2.0",
+		"xo": "^0.53.1"
 	}
 }

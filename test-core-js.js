@@ -189,7 +189,9 @@ test('ManyKeysWeakMap#set', t => {
 	weakmap.set([object], 33);
 	t.is(weakmap.get([object]), 33, 'works with object as keys');
 	t.true(weakmap.set([{}], 42) === weakmap, 'chaining');
-	t.throws(() => new ManyKeysWeakMap().set([42], 42), 'Invalid value used as weak map key');
+	t.throws(() => new ManyKeysWeakMap().set([42], 42), {
+		message: 'Invalid value used as weak map key'
+	});
 	const object1 = Object.freeze({});
 	const object2 = {};
 	weakmap.set([object1], 42);
