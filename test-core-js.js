@@ -24,7 +24,7 @@ THE SOFTWARE.
 // https://github.com/zloirock/core-js/blob/3dfb876e2188c9d04f957ebfd76861591d80abf7/tests/tests/es.weak-map.js
 
 import test from 'ava';
-import ManyKeysWeakMap from '.';
+import ManyKeysWeakMap from './index.js';
 
 function createIterable(elements, methods) {
 	const iterable = {
@@ -38,9 +38,9 @@ function createIterable(elements, methods) {
 					iterable.called = true;
 					return {
 						value: elements[index++],
-						done: index > elements.length
+						done: index > elements.length,
 					};
-				}
+				},
 			};
 			if (methods) {
 				for (const key of Object.keys(methods)) {
@@ -49,7 +49,7 @@ function createIterable(elements, methods) {
 			}
 
 			return iterator;
-		}
+		},
 	};
 	return iterable;
 }
@@ -65,7 +65,7 @@ test('ManyKeysWeakMap', t => {
 	t.true(new ManyKeysWeakMap() instanceof ManyKeysWeakMap, 'new ManyKeysWeakMap instanceof ManyKeysWeakMap');
 	let object = {};
 	t.is(new ManyKeysWeakMap(createIterable([
-		[[object], 42]
+		[[object], 42],
 	])).get([object]), 42, 'Init from iterable');
 	let weakmap = new ManyKeysWeakMap();
 	const frozen = Object.freeze({});
@@ -80,13 +80,14 @@ test('ManyKeysWeakMap', t => {
 	t.is(weakmap.get([frozen]), undefined, 'works with frozen objects, #4');
 	let done = false;
 	try {
+		// eslint-disable-next-line no-new
 		new ManyKeysWeakMap(createIterable([null, 1, 2], {
 			return() {
 				done = true;
 				return done;
-			}
+			},
 		}));
-	} catch (error) {/* */}
+	} catch {/* */}
 
 	t.true(done, '.return #throw');
 	t.true(!('clear' in ManyKeysWeakMap.prototype), 'should not contains `.clear` method');
@@ -95,9 +96,10 @@ test('ManyKeysWeakMap', t => {
 	array['@@iterator'] = undefined;
 	array[Symbol.iterator] = function () {
 		done = true;
-		return [][Symbol.iterator].call(this);
+		return Array.prototype[Symbol.iterator].call(this);
 	};
 
+	// eslint-disable-next-line no-new
 	new ManyKeysWeakMap(array);
 	t.true(done);
 	object = {};
@@ -119,7 +121,7 @@ test('ManyKeysWeakMap#delete', t => {
 	t.is(typeof ManyKeysWeakMap.prototype.delete, 'function');
 	t.is(ManyKeysWeakMap.prototype.delete.name, 'delete');
 	t.is(ManyKeysWeakMap.prototype.delete.length, 1);
-	t.false({}.propertyIsEnumerable.call(ManyKeysWeakMap.prototype, 'delete'));
+	t.false(Object.prototype.propertyIsEnumerable.call(ManyKeysWeakMap.prototype, 'delete'));
 	const a = {};
 	const b = {};
 	const weakmap = new ManyKeysWeakMap();
@@ -141,7 +143,7 @@ test('ManyKeysWeakMap#get', t => {
 	t.is(typeof ManyKeysWeakMap.prototype.get, 'function');
 	t.is(ManyKeysWeakMap.prototype.get.name, 'get');
 	t.is(ManyKeysWeakMap.prototype.get.length, 1);
-	t.false({}.propertyIsEnumerable.call(ManyKeysWeakMap.prototype, 'get'));
+	t.false(Object.prototype.propertyIsEnumerable.call(ManyKeysWeakMap.prototype, 'get'));
 	const weakmap = new ManyKeysWeakMap();
 	t.is(weakmap.get([{}]), undefined, 'ManyKeysWeakMap .get() before .set() return undefined');
 	let object = {};
@@ -162,7 +164,7 @@ test('ManyKeysWeakMap#has', t => {
 	t.is(typeof ManyKeysWeakMap.prototype.has, 'function');
 	t.is(ManyKeysWeakMap.prototype.has.name, 'has');
 	t.is(ManyKeysWeakMap.prototype.has.length, 1);
-	t.false({}.propertyIsEnumerable.call(ManyKeysWeakMap.prototype, 'has'));
+	t.false(Object.prototype.propertyIsEnumerable.call(ManyKeysWeakMap.prototype, 'has'));
 	const weakmap = new ManyKeysWeakMap();
 	t.true(!weakmap.has([{}]), 'ManyKeysWeakMap .has() before .set() return false');
 	let object = {};
@@ -183,13 +185,15 @@ test('ManyKeysWeakMap#set', t => {
 	t.is(typeof ManyKeysWeakMap.prototype.set, 'function');
 	t.is(ManyKeysWeakMap.prototype.set.name, 'set');
 	t.is(ManyKeysWeakMap.prototype.set.length, 2);
-	t.false({}.propertyIsEnumerable.call(ManyKeysWeakMap.prototype, 'set'));
+	t.false(Object.prototype.propertyIsEnumerable.call(ManyKeysWeakMap.prototype, 'set'));
 	const weakmap = new ManyKeysWeakMap();
 	const object = {};
 	weakmap.set([object], 33);
 	t.is(weakmap.get([object]), 33, 'works with object as keys');
 	t.true(weakmap.set([{}], 42) === weakmap, 'chaining');
-	t.throws(() => new ManyKeysWeakMap().set([42], 42), 'Invalid value used as weak map key');
+	t.throws(() => new ManyKeysWeakMap().set([42], 42), {
+		message: 'Invalid value used as weak map key',
+	});
 	const object1 = Object.freeze({});
 	const object2 = {};
 	weakmap.set([object1], 42);

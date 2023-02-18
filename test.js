@@ -1,6 +1,6 @@
 import test from 'ava';
 
-const ManyKeysWeakMap = require('.');
+import ManyKeysWeakMap from './index.js';
 
 test('Basics', t => {
 	const map = new ManyKeysWeakMap();
@@ -29,7 +29,7 @@ test('Get', t => {
 	const map = new ManyKeysWeakMap([
 		[[W], 'first'],
 		[[O, W], 'second'],
-		[[O, W, T], 'third']
+		[[O, W, T], 'third'],
 	]);
 
 	t.is(map.get([W]), 'first');
@@ -49,7 +49,7 @@ test('Has', t => {
 	const map = new ManyKeysWeakMap([
 		[[W], 'first'],
 		[[O, W], 'second'],
-		[[O, W, T], 'third']
+		[[O, W, T], 'third'],
 	]);
 
 	t.true(map.has([W]));
@@ -68,7 +68,7 @@ test('Delete', t => {
 		[[O, W], 'second'],
 		[[O, W, T], 'third'],
 		[[object], 'fourth'],
-		[[object, object], 'fifth']
+		[[object, object], 'fifth'],
 	]);
 
 	t.true(map.delete([W]));
