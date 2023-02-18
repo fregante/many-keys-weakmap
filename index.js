@@ -33,7 +33,6 @@ module.exports = class ManyKeysWeakMap extends WeakMap {
 		super();
 		this[baseMap] = new WeakMap();
 
-		// eslint-disable-next-line prefer-rest-params
 		const [pairs] = arguments; // WeakMap compat
 		if (pairs === null || pairs === undefined) {
 			return;

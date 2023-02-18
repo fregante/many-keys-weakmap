@@ -4,8 +4,12 @@
 	"description": "",
 	"keywords": [],
 	"repository": "fregante/many-keys-weakmap",
+	"funding": "https://github.com/sponsors/fregante",
 	"license": "MIT",
-	"author": "Federico Brigante <opensource@bfred.it> (bfred.it)",
+	"author": "Federico Brigante <me@fregante.com> (https://fregante.com)",
+	"exports": "./index.js",
+	"main": "./index.js",
+	"types": "./index.d.ts",
 	"files": [
 		"index.js"
 	],
