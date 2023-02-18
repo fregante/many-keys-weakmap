@@ -32,6 +32,7 @@
 		}
 	},
 	"devDependencies": {
+		"@sindresorhus/tsconfig": "^3.0.1",
 		"ava": "^5.2.0",
 		"xo": "^0.53.1"
 	}
