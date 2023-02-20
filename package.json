@@ -1,6 +1,5 @@
 {
 	"name": "many-keys-weakmap",
-	"types": "index.d.ts",
 	"version": "1.0.0",
 	"description": "A `WeakMap` subclass with support for multiple keys for one entry.",
 	"keywords": [
@@ -20,6 +19,7 @@
 	"type": "module",
 	"exports": "./index.js",
 	"main": "./index.js",
+	"types": "index.d.ts",
 	"files": [
 		"index.js"
 	],
