@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/naming-convention, @typescript-eslint/ban-types, no-new */
-import {test, assert as t} from 'vitest';
-
+import {test, assert} from 'vitest';
 import ManyKeysWeakMap from './index.js';
+
+// AVA shim
+const t = {
+	is: assert.equal,
+	true: assert.isTrue,
+	false: assert.isFalse,
+};
 
 const W = {};
 const O = {};
@@ -9,10 +15,10 @@ const T = {};
 
 test('Basics', () => {
 	const map = new ManyKeysWeakMap();
-	t.isTrue(map instanceof WeakMap);
-	t.equal(map.get.length, 1);
-	t.equal(map.set.length, 2);
-	t.equal(map.delete.length, 1);
+	t.true(map instanceof WeakMap);
+	t.is(map.get.length, 1);
+	t.is(map.set.length, 2);
+	t.is(map.delete.length, 1);
 });
 
 test('Types', () => {
@@ -40,7 +46,6 @@ test('Types', () => {
 	new WeakMap([[O, value]]);
 });
 
-
 test('Set', () => {
 	const map = new ManyKeysWeakMap();
 	map.set([W], 'first');
@@ -49,7 +54,7 @@ test('Set', () => {
 	map.set([O, W, T], 'fourth');
 
 	// Also make sure that the same map is returned
-	t.equal(map.set([W, O], 0), map);
+	t.is(map.set([W, O], 0), map);
 });
 
 test('Get', () => {
@@ -59,17 +64,17 @@ test('Get', () => {
 		[[O, W, T], 'third'],
 	]);
 
-	t.equal(map.get([W]), 'first');
-	t.equal(map.get([O, W]), 'second');
-	t.equal(map.get([O, W, T]), 'third');
-	t.equal(map.get([O]), undefined);
-	t.equal(map.get([O, T]), undefined);
-	t.equal(map.get([O, T, W]), undefined);
+	t.is(map.get([W]), 'first');
+	t.is(map.get([O, W]), 'second');
+	t.is(map.get([O, W, T]), 'third');
+	t.is(map.get([O]), undefined);
+	t.is(map.get([O, T]), undefined);
+	t.is(map.get([O, T, W]), undefined);
 
 	map.set([O, W], 'one');
 	map.set([W, O], 'two');
-	t.equal(map.get([O, W]), 'one');
-	t.equal(map.get([W, O]), 'two');
+	t.is(map.get([O, W]), 'one');
+	t.is(map.get([W, O]), 'two');
 });
 
 test('Has', () => {
@@ -79,12 +84,12 @@ test('Has', () => {
 		[[O, W, T], 'third'],
 	]);
 
-	t.isTrue(map.has([W]));
-	t.isTrue(map.has([O, W]));
-	t.isTrue(map.has([O, W, T]));
-	t.isFalse(map.has([O]));
-	t.isFalse(map.has([O, T]));
-	t.isFalse(map.has([O, T, W]));
+	t.true(map.has([W]));
+	t.true(map.has([O, W]));
+	t.true(map.has([O, W, T]));
+	t.false(map.has([O]));
+	t.false(map.has([O, T]));
+	t.false(map.has([O, T, W]));
 });
 
 test('Delete', () => {
@@ -98,23 +103,23 @@ test('Delete', () => {
 		[[object, object], 'fifth'],
 	]);
 
-	t.isTrue(map.delete([W]));
-	t.isFalse(map.delete([W]));
-	t.isTrue(map.delete([O, W]));
-	t.isTrue(map.delete([O, W, T]));
-	t.isTrue(map.delete([object, object]));
-	t.isFalse(map.delete([object, object]));
-	t.isTrue(map.delete([object]));
+	t.true(map.delete([W]));
+	t.false(map.delete([W]));
+	t.true(map.delete([O, W]));
+	t.true(map.delete([O, W, T]));
+	t.true(map.delete([object, object]));
+	t.false(map.delete([object, object]));
+	t.true(map.delete([object]));
 });
 
 test('All types of keys', () => {
 	const map = new ManyKeysWeakMap();
 
 	let key = {};
-	t.equal(map.set([key], 'object').get([key]), 'object');
-	t.isTrue(map.delete([key]));
+	t.is(map.set([key], 'object').get([key]), 'object');
+	t.true(map.delete([key]));
 
 	key = [];
-	t.equal(map.set([key], 'array').get([key]), 'array');
-	t.isTrue(map.delete([key]));
+	t.is(map.set([key], 'array').get([key]), 'array');
+	t.true(map.delete([key]));
 });
