@@ -24,7 +24,7 @@
 		"index.js"
 	],
 	"scripts": {
-		"test": "xo && ava && tsc --noEmit"
+		"test": "xo && vitest && tsc --noEmit"
 	},
 	"devDependencies": {
 		"@sindresorhus/tsconfig": "^3.0.1",
