@@ -23,8 +23,16 @@ THE SOFTWARE.
 // Source
 // https://github.com/zloirock/core-js/blob/3dfb876e2188c9d04f957ebfd76861591d80abf7/tests/tests/es.weak-map.js
 
-import test from 'ava';
+import {test, assert} from 'vitest';
 import ManyKeysWeakMap from './index.js';
+
+// AVA shim
+const t = {
+	...assert,
+	is: assert.equal,
+	true: assert.isTrue,
+	false: assert.isFalse,
+};
 
 function createIterable(elements, methods) {
 	const iterable = {
@@ -54,7 +62,7 @@ function createIterable(elements, methods) {
 	return iterable;
 }
 
-test('ManyKeysWeakMap', t => {
+test('ManyKeysWeakMap', () => {
 	t.is(typeof ManyKeysWeakMap, 'function');
 	t.is(ManyKeysWeakMap.name, 'ManyKeysWeakMap');
 	t.is(ManyKeysWeakMap.length, 0);
@@ -117,7 +125,7 @@ test('ManyKeysWeakMap', t => {
 	t.is(new Subclass().set([object], 2).get([object]), 2, 'correct subclassing with native classes #3');
 });
 
-test('ManyKeysWeakMap#delete', t => {
+test('ManyKeysWeakMap#delete', () => {
 	t.is(typeof ManyKeysWeakMap.prototype.delete, 'function');
 	t.is(ManyKeysWeakMap.prototype.delete.name, 'delete');
 	t.is(ManyKeysWeakMap.prototype.delete.length, 1);
@@ -130,7 +138,7 @@ test('ManyKeysWeakMap#delete', t => {
 	t.true(weakmap.has([a]) && weakmap.has([b]), 'ManyKeysWeakMap has values before .delete()');
 	weakmap.delete([a]);
 	t.true(!weakmap.has([a]) && weakmap.has([b]), 'ManyKeysWeakMap hasn`t value after .delete()');
-	t.notThrows(() => !weakmap.delete([1]), 'return false on primitive');
+	t.doesNotThrow(() => !weakmap.delete([1]), 'return false on primitive');
 	const object = {};
 	weakmap.set([object], 42);
 	Object.freeze(object);
@@ -139,7 +147,7 @@ test('ManyKeysWeakMap#delete', t => {
 	t.true(!weakmap.has([object]), 'works with frozen objects #2');
 });
 
-test('ManyKeysWeakMap#get', t => {
+test('ManyKeysWeakMap#get', () => {
 	t.is(typeof ManyKeysWeakMap.prototype.get, 'function');
 	t.is(ManyKeysWeakMap.prototype.get.name, 'get');
 	t.is(ManyKeysWeakMap.prototype.get.length, 1);
@@ -151,7 +159,7 @@ test('ManyKeysWeakMap#get', t => {
 	t.is(weakmap.get([object]), 42, 'ManyKeysWeakMap .get() return value');
 	weakmap.delete([object]);
 	t.is(weakmap.get([object]), undefined, 'ManyKeysWeakMap .get() after .delete() return undefined');
-	t.notThrows(() => weakmap.get([1]) === undefined, 'return undefined on primitive');
+	t.doesNotThrow(() => weakmap.get([1]) === undefined, 'return undefined on primitive');
 	object = {};
 	weakmap.set([object], 42);
 	Object.freeze(object);
@@ -160,7 +168,7 @@ test('ManyKeysWeakMap#get', t => {
 	t.is(weakmap.get([object]), undefined, 'works with frozen objects #2');
 });
 
-test('ManyKeysWeakMap#has', t => {
+test('ManyKeysWeakMap#has', () => {
 	t.is(typeof ManyKeysWeakMap.prototype.has, 'function');
 	t.is(ManyKeysWeakMap.prototype.has.name, 'has');
 	t.is(ManyKeysWeakMap.prototype.has.length, 1);
@@ -172,7 +180,7 @@ test('ManyKeysWeakMap#has', t => {
 	t.true(weakmap.has([object]), 'ManyKeysWeakMap .has() return true');
 	weakmap.delete([object]);
 	t.true(!weakmap.has([object]), 'ManyKeysWeakMap .has() after .delete() return false');
-	t.notThrows(() => !weakmap.has([1]), 'return false on primitive');
+	t.doesNotThrow(() => !weakmap.has([1]), 'return false on primitive');
 	object = {};
 	weakmap.set([object], 42);
 	Object.freeze(object);
@@ -181,7 +189,7 @@ test('ManyKeysWeakMap#has', t => {
 	t.true(!weakmap.has([object]), 'works with frozen objects #2');
 });
 
-test('ManyKeysWeakMap#set', t => {
+test('ManyKeysWeakMap#set', () => {
 	t.is(typeof ManyKeysWeakMap.prototype.set, 'function');
 	t.is(ManyKeysWeakMap.prototype.set.name, 'set');
 	t.is(ManyKeysWeakMap.prototype.set.length, 2);
@@ -191,9 +199,7 @@ test('ManyKeysWeakMap#set', t => {
 	weakmap.set([object], 33);
 	t.is(weakmap.get([object]), 33, 'works with object as keys');
 	t.true(weakmap.set([{}], 42) === weakmap, 'chaining');
-	t.throws(() => new ManyKeysWeakMap().set([42], 42), {
-		message: 'Invalid value used as weak map key',
-	});
+	t.throws(() => new ManyKeysWeakMap().set([42], 42), TypeError, 'Invalid value used as weak map key');
 	const object1 = Object.freeze({});
 	const object2 = {};
 	weakmap.set([object1], 42);
@@ -207,7 +213,7 @@ test('ManyKeysWeakMap#set', t => {
 	t.is(weakmap.get([object2]), undefined, 'works with frozen objects #4');
 });
 
-test('ManyKeysWeakMap#@@toStringTag', t => {
+test('ManyKeysWeakMap#@@toStringTag', () => {
 	t.is(ManyKeysWeakMap.prototype[Symbol.toStringTag], 'ManyKeysWeakMap', 'ManyKeysWeakMap::@@toStringTag is `ManyKeysWeakMap`');
 	t.is(String(new ManyKeysWeakMap()), '[object ManyKeysWeakMap]', 'correct stringification');
 });

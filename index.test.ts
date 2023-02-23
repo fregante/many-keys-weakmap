@@ -1,8 +1,19 @@
-import test from 'ava';
-
+/* eslint-disable @typescript-eslint/naming-convention, @typescript-eslint/ban-types, no-new */
+import {test, assert} from 'vitest';
 import ManyKeysWeakMap from './index.js';
 
-test('Basics', t => {
+// AVA shim
+const t = {
+	is: assert.equal,
+	true: assert.isTrue,
+	false: assert.isFalse,
+};
+
+const W = {};
+const O = {};
+const T = {};
+
+test('Basics', () => {
 	const map = new ManyKeysWeakMap();
 	t.true(map instanceof WeakMap);
 	t.is(map.get.length, 1);
@@ -10,11 +21,32 @@ test('Basics', t => {
 	t.is(map.delete.length, 1);
 });
 
-const W = {};
-const O = {};
-const T = {};
+test('Types', () => {
+	new ManyKeysWeakMap<object, number>();
 
-test('Set', t => {
+	// @ts-expect-error -- Must be object
+	new ManyKeysWeakMap<number, number>();
+	// @ts-expect-error -- Must be object
+	new ManyKeysWeakMap<string, number>();
+	// @ts-expect-error -- Must be object
+	new ManyKeysWeakMap<symbol, number>();
+
+	const map = new ManyKeysWeakMap<object, number | string>();
+	map.set([W, O], 1);
+	map.set([W, O], 'string');
+
+	// @ts-expect-error -- Must match type provided in generic
+	map.set([W, O], {});
+	// @ts-expect-error -- Must match type provided in generic
+	map.set([W, O], Symbol('na'));
+
+	const value: number | string | undefined = map.get([W, O]);
+
+	// Shush "unused" vars
+	new WeakMap([[O, value]]);
+});
+
+test('Set', () => {
 	const map = new ManyKeysWeakMap();
 	map.set([W], 'first');
 	map.set([W], 'second');
@@ -22,10 +54,10 @@ test('Set', t => {
 	map.set([O, W, T], 'fourth');
 
 	// Also make sure that the same map is returned
-	t.is(map.set([W, O]), map);
+	t.is(map.set([W, O], 0), map);
 });
 
-test('Get', t => {
+test('Get', () => {
 	const map = new ManyKeysWeakMap([
 		[[W], 'first'],
 		[[O, W], 'second'],
@@ -45,7 +77,7 @@ test('Get', t => {
 	t.is(map.get([W, O]), 'two');
 });
 
-test('Has', t => {
+test('Has', () => {
 	const map = new ManyKeysWeakMap([
 		[[W], 'first'],
 		[[O, W], 'second'],
@@ -60,7 +92,7 @@ test('Has', t => {
 	t.false(map.has([O, T, W]));
 });
 
-test('Delete', t => {
+test('Delete', () => {
 	const object = {};
 
 	const map = new ManyKeysWeakMap([
@@ -80,7 +112,7 @@ test('Delete', t => {
 	t.true(map.delete([object]));
 });
 
-test('All types of keys', t => {
+test('All types of keys', () => {
 	const map = new ManyKeysWeakMap();
 
 	let key = {};
