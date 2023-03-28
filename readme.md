@@ -9,10 +9,12 @@ A `ManyKeysWeakMap` object is identical to a regular `WeakMap`, which the except
 
 ```js
 const regularMap = new WeakMap();
-regularMap.set({}, true);
+const obj = {};
+regularMap.set(obj, true);
 
 const manyKeysWeakMap = new ManyKeysWeakMap();
-manyKeysWeakMap.set([{}, new Date()], true);
+const date = new Date();
+manyKeysWeakMap.set([obj, date], true);
 ```
 
 Or:
@@ -20,7 +22,8 @@ Or:
 ```js
 const handlers = new ManyKeysWeakMap();
 handlers.set([element, sub1], fn1);
-handlers.set([element, sub2, {passive: true}], fn2);
+const someOptions = {passive: true};
+handlers.set([element, sub2, someOptions], fn2);
 ```
 
 The number of keys allowed is unlimited and their order is relevant.
